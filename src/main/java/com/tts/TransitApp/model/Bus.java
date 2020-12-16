@@ -1,7 +1,7 @@
 package com.tts.TransitApp.model;
 
 public class Bus {
-	public String ADHERENCE;
+    public String ADHERENCE;
     public String BLOCKID;
     public String BLOCK_ABBR;
     public String DIRECTION;
