@@ -37,7 +37,7 @@ public class TransitService {
         return Arrays.asList(buses);
     }
 
-    private Location getCoordinates(String description) {
+    public Location getCoordinates(String description) {
         description = description.replace(" ", "+");
         String url = geocodingUrl + description + "+GA&key=" + googleApiKey;
         RestTemplate restTemplate = new RestTemplate();
