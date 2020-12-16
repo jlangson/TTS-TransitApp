@@ -25,6 +25,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 public class TransitService {
@@ -70,14 +71,40 @@ public class TransitService {
         Bus[] buses = restTemplate.getForObject(transitUrl, Bus[].class);
         return Arrays.asList(buses);
     }
+    
+    public boolean validate(GeocodingResponse response){
+        
+//        return response.results.get(0);
+        return true;
+    }
 
     public Location getCoordinates(String description) {
         description = description.replace(" ", "+");
         String url = geocodingUrl + description + "+GA&key=" + googleApiKey;
         RestTemplate restTemplate = new RestTemplate();
-        GeocodingResponse response = restTemplate.getForObject(url, GeocodingResponse.class);
-        return response.results.get(0).geometry.location;
+        System.out.println(url);
+        
+        
+        try {
+            GeocodingResponse response = restTemplate.getForObject(url, GeocodingResponse.class);//error here
+            return response.results.get(0).geometry.location;
+        }
+        catch (HttpClientErrorException ex) {
+            Location emptyLocation = new Location();
+            emptyLocation.setLat("0");
+            emptyLocation.setLng("0");
+            return emptyLocation;
+        }
+        catch (IndexOutOfBoundsException ex){
+            Location emptyLocation = new Location();
+            emptyLocation.setLat("0");
+            emptyLocation.setLng("0");
+            return emptyLocation;
+        }
     }
+        
+//        33.762395223604535, -84.3946210122613 - a park in atlanta
+          
 
     private double getDistance(Location origin, Location destination) {
         String url = distanceUrl + "origins=" + origin.lat + "," + origin.lng + "&destinations=" 
@@ -89,7 +116,7 @@ public class TransitService {
 
     public List<Bus> getNearbyBuses(BusRequest request){
         List<Bus> allBuses = this.getBuses();
-        Location personLocation = this.getCoordinates(request.address + " " + request.city);
+        Location personLocation = this.getCoordinates(request.address + " " + request.city); //error here
         List<Bus> nearbyBuses = new ArrayList<>();
         for(Bus bus : allBuses) {
                 Location busLocation = new Location();

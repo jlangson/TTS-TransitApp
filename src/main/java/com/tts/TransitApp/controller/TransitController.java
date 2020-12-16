@@ -31,6 +31,8 @@ public class TransitController {
 
     @PostMapping("/buses")
     public String getNearbyBuses(BusRequest request, Model model) {
+        //do error handling on request
+        
         List<Bus> buses = apiService.getNearbyBuses(request);
         Location person = apiService.getCoordinates(request.getAddress()+ " " + request.getCity());
         model.addAttribute("person", person);
@@ -44,7 +46,7 @@ public class TransitController {
     public String getFakeBuses(BusRequest request, Model model) throws IOException, ParseException{
   
         Location person = apiService.getCoordinates(request.getAddress()+ " " + request.getCity());
-        JSONArray busJSONArray = apiService.parseJSON("marta-subset.json");
+        JSONArray busJSONArray = apiService.parseJSON("marta-all.json");
         ArrayList<Bus> buses = new ArrayList<Bus>(busJSONArray.size());
         for(int i=0; i < busJSONArray.size(); i++){
             buses.add(new Bus((JSONObject) busJSONArray.get(i)));
