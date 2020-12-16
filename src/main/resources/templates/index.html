@@ -20,12 +20,14 @@
 			      		<input type="text" th:field="*{city}" placeholder="City" class="form-control"/>		        
 			       	</div>	        
 			        <div class="form-group">
-			           	<button class="btn btn-md btn-primary btn-block" name="Submit" value="Submit" type="Submit">Find</button>
+                <button class="btn btn-md btn-primary btn-block" name="Submit" value="Submit" type="Submit" th:formaction="@{buses}">Find</button>
+                  <button type="submit" th:formaction="@{/marta-down}">MARTA down? Get some hard-coded bus data instead!</button>
 			        </div>
 			    </form>
 			   	<br/>
 			</div>
 		</div>
+    <form th:action="@{/marta-down}"></form>
 		<div class="row" th:if="${buses != null and buses.size() > 0}">
     		<table class="table table-striped">
        			<tr>

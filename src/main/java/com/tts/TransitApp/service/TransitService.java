@@ -1,5 +1,7 @@
 package com.tts.TransitApp.service;
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +17,14 @@ import com.tts.TransitApp.model.BusRequest;
 import com.tts.TransitApp.model.DistanceResponse;
 import com.tts.TransitApp.model.GeocodingResponse;
 import com.tts.TransitApp.model.Location;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+ 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 @Service
 public class TransitService {
@@ -30,6 +40,30 @@ public class TransitService {
 
     @Value("${google_api_key}")
     public String googleApiKey;
+    
+     public JSONArray parseJSON(String file) throws IOException, ParseException{
+        JSONParser parser = new JSONParser();
+        
+        try (FileReader reader = new FileReader(file))
+        {
+            //Read JSON file
+            Object obj = parser.parse(reader);
+ 
+            JSONArray busList = (JSONArray) obj;
+            System.out.println(busList);
+            return busList;
+ 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        
+        return new JSONArray();
+            
+    }
 
     private List<Bus> getBuses(){
         RestTemplate restTemplate = new RestTemplate();

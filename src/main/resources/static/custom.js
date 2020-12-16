@@ -8,16 +8,25 @@ function initMap() {
   var image ={url: '/bus-stop.png',
               scaledSize: new google.maps.Size(50,50)};
 	for (i=0; i<busLocations.length; i++){
-		var marker = new google.maps.Marker({
+    //bus_marker defined
+		var bus_marker = new google.maps.Marker({
 		    position: { lat: parseFloat(busLocations[i].LATITUDE), lng: parseFloat(busLocations[i].LONGITUDE) },
 		    map: map,
         icon: image
 		});
-	} //does something go here?
+    var infowindow = new google.maps.InfoWindow();
+    content = 'Vehicle is ' + busLocations[i].VEHICLE
+    google.maps.event.addListener(bus_marker,'click', (function(bus_marker,content,infowindow){ 
+        return function() {
+            infowindow.setContent(content);
+            infowindow.open(map,bus_marker);
+        };
+    })(bus_marker,content,infowindow));  
+	}
 
   var person_image={url: '/pedestrian.png',
                     scaledSize: new google.maps.Size(50,50)};
-  var marker = new google.maps.Marker({
+  var person_marker = new google.maps.Marker({
               position: { lat: parseFloat(personLocation.lat), lng: parseFloat(personLocation.lng) },
               map: map,
               icon: person_image});
