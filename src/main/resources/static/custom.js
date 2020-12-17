@@ -30,6 +30,8 @@ function initMap() {
               position: { lat: parseFloat(personLocation.lat), lng: parseFloat(personLocation.lng) },
               map: map,
               icon: person_image});
+
+  //google.maps.event.trigger(map, 'reize');
 }
 /*var map;
 function initMap() {
