@@ -1,7 +1,11 @@
 package com.tts.TransitApp.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.json.simple.JSONObject;
 
+@NoArgsConstructor
+@Data
 public class Bus {
     public String ADHERENCE;
     public String BLOCKID;

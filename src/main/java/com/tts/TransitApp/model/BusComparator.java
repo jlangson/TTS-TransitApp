@@ -1,7 +1,10 @@
 package com.tts.TransitApp.model;
 
+import lombok.Data;
+
 import java.util.Comparator;
 
+@Data
 public class BusComparator implements Comparator<Bus> {
     @Override
     public int compare(Bus o1, Bus o2) {
